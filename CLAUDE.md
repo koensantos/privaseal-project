@@ -29,6 +29,25 @@ The OCR engine is complete and working. Key implementation details:
 - Result key from PaddleOCR v3.x is `dt_polys` (not `det_polys`)
 - Tested on Mac with CPU only — runs but is slow (~30–45s/image including model load). **Recommend running on a machine with a GPU for real throughput.**
 
+## Pipeline Skeleton (`pipeline.py`)
+`pipeline.py` is the main orchestrator. It defines the shared data contract and wires all stages together.
+
+**Redaction target schema** (the currency passed between stages):
+```python
+{ "label": str, "bounding_box": (x1, y1, x2, y2), "page_number": int, "source": str, "confidence": float }
+```
+
+**Stage ownership:**
+- `stage_ocr()` — **Kush Parmar** — complete, calls `ocr_engine.py`
+- `stage_text_pii()` — **Nishvi Patel** — stub, implement with Microsoft Presidio
+- `stage_visual_pii()` — **Connor Marano / Koen Santos** — stub, implement with YOLOv8
+- Streamlit dashboard (`app.py`) — not started
+
+**To run the pipeline end-to-end:**
+```bash
+python pipeline.py "Generated Files/employee_onboarding_packet.pdf"
+```
+
 ## What's NOT Built Yet
 Text PII detection (Presidio), visual PII detection (YOLO), and the Streamlit dashboard have not been started.
 

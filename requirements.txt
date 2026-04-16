@@ -1,0 +1,14 @@
+# OCR Engine
+paddleocr==3.4.1
+pdf2image==1.17.0
+pillow==12.0.0
+numpy==2.3.5
+
+# PaddlePaddle — install the GPU build separately on Windows (see README below)
+# CPU-only (Mac/Linux):   pip install paddlepaddle==3.3.1
+# GPU (Windows/CUDA 11):  pip install paddlepaddle-gpu==3.3.1 -i https://www.paddlepaddle.org.cn/packages/stable/cu118/
+# GPU (Windows/CUDA 12):  pip install paddlepaddle-gpu==3.3.1 -i https://www.paddlepaddle.org.cn/packages/stable/cu123/
+
+# PDF generation (synthetic test data only — not needed for the pipeline)
+faker
+reportlab

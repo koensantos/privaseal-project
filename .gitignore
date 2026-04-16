@@ -1,0 +1,29 @@
+# Python
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+
+# PaddleOCR model cache (downloaded automatically on first run)
+~/.paddleocr/
+inference/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Large test assets (not needed on other machines)
+test_page.png
+
+# Datasets (large, download separately)
+funsd-dataset/
+wider-face-dataset/

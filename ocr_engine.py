@@ -1,8 +1,15 @@
 import logging
 import os
+import sys
 
 logging.disable(logging.CRITICAL)
 os.environ["PADDLE_PDX_DISABLE_MODEL_SOURCE_CHECK"] = "True"
+
+# Poppler path — Mac (homebrew) vs Windows
+if sys.platform == "win32":
+    _POPPLER_PATH = r"C:\poppler-25.12.0\Library\bin"
+else:
+    _POPPLER_PATH = "/opt/homebrew/bin"
 
 from paddleocr import PaddleOCR
 from pdf2image import convert_from_path
@@ -83,13 +90,14 @@ def run_ocr_on_pdf(pdf_path, dpi=200):
     """
     from pdf2image import pdfinfo_from_path
 
-    info = pdfinfo_from_path(pdf_path, poppler_path="/opt/homebrew/bin")
+    pdf_path = os.path.abspath(pdf_path)
+    info = pdfinfo_from_path(pdf_path, poppler_path=_POPPLER_PATH)
     num_pages = info["Pages"]
 
     all_results = []
     for page_num in range(1, num_pages + 1):
         pages = convert_from_path(
-            pdf_path, dpi=dpi, poppler_path="/opt/homebrew/bin",
+            pdf_path, dpi=dpi, poppler_path=_POPPLER_PATH,
             first_page=page_num, last_page=page_num,
         )
         page_image = pages[0]

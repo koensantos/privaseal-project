@@ -27,3 +27,6 @@ test_page.png
 # Datasets (large, download separately)
 funsd-dataset/
 wider-face-dataset/
+
+# Claude context (local only)
+CLAUDE.md

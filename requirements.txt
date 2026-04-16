@@ -1,14 +1,25 @@
-# OCR Engine
+# ── OCR Engine ───────────────────────────────────────────────────────────────
 paddleocr==3.4.1
 pdf2image==1.17.0
 pillow==12.0.0
 numpy==2.3.5
 
-# PaddlePaddle — install the GPU build separately on Windows (see README below)
-# CPU-only (Mac/Linux):   pip install paddlepaddle==3.3.1
-# GPU (Windows/CUDA 11):  pip install paddlepaddle-gpu==3.3.1 -i https://www.paddlepaddle.org.cn/packages/stable/cu118/
-# GPU (Windows/CUDA 12):  pip install paddlepaddle-gpu==3.3.1 -i https://www.paddlepaddle.org.cn/packages/stable/cu123/
+# PaddlePaddle must be installed separately before running pip install -r requirements.txt
+# See README.md for the exact command for your platform.
 
-# PDF generation (synthetic test data only — not needed for the pipeline)
+# ── Text PII Detection (Presidio) ────────────────────────────────────────────
+presidio-analyzer
+presidio-anonymizer
+spacy
+# After installing, also run: python -m spacy download en_core_web_lg
+
+# ── Visual PII Detection (YOLOv8) ────────────────────────────────────────────
+ultralytics
+
+# ── Streamlit Dashboard ──────────────────────────────────────────────────────
+streamlit
+pypdf2
+
+# ── Synthetic PDF generation (test data only) ────────────────────────────────
 faker
 reportlab

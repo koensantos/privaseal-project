@@ -41,23 +41,10 @@ def stage_ocr(input_path: str) -> list[dict]:
 # Stage 2 — Text PII Detection  (TODO: Microsoft Presidio)
 # ---------------------------------------------------------------------------
 
+from text_pii import stage_text_pii as detect_text_pii
+
 def stage_text_pii(ocr_results: list[dict]) -> list[dict]:
-    """
-    Classify OCR results and return only those containing PII.
-
-    Args:
-        ocr_results: output of stage_ocr()
-
-    Returns:
-        [{ label, bounding_box, page_number, source="text", confidence }, ...]
-
-    TODO: implement using Microsoft Presidio.
-          For each item in ocr_results, run Presidio NER on item["text"].
-          If a PII entity is found, emit a redaction target using item["bounding_box"].
-          entity_type values to detect: PERSON, SSN, PHONE_NUMBER, EMAIL_ADDRESS,
-          US_DRIVER_LICENSE, CREDIT_CARD, DATE_TIME, LOCATION, US_PASSPORT.
-    """
-    return []
+    return detect_text_pii(ocr_results)
 
 
 # ---------------------------------------------------------------------------

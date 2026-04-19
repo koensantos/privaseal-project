@@ -7,9 +7,16 @@ os.environ["PADDLE_PDX_DISABLE_MODEL_SOURCE_CHECK"] = "True"
 
 # Poppler path — Mac (homebrew) vs Windows
 if sys.platform == "win32":
-    _POPPLER_PATH = r"C:\poppler-25.12.0\Library\bin"
+    _POPPLER_PATH = r"C:\Release-25.12.0-0\poppler-25.12.0\Library\bin"
 else:
     _POPPLER_PATH = "/opt/homebrew/bin"
+
+import os
+
+# Disable problematic CPU optimizations on Windows
+os.environ["FLAGS_use_mkldnn"] = "0"
+os.environ["OMP_NUM_THREADS"] = "1"
+
 
 from paddleocr import PaddleOCR
 from pdf2image import convert_from_path
@@ -19,8 +26,10 @@ import numpy as np
 
 # Initialize once at module level — loading the model is expensive (~3s),
 # so we don't want to reload it on every function call.
-_ocr = PaddleOCR(use_textline_orientation=False, lang="en")
-
+_ocr = PaddleOCR(
+    lang="en",
+    use_angle_cls=False
+)
 
 def _polygon_to_bbox(polygon):
     """Convert PaddleOCR's 4-point polygon to a simple (x1, y1, x2, y2) bounding box."""

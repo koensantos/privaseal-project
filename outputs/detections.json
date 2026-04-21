@@ -1,0 +1,80 @@
+[
+  {
+    "document": "employee_onboarding_packet",
+    "page": 2,
+    "type": "visual_pii_candidate",
+    "label": "person",
+    "confidence": 0.662,
+    "bbox": [
+      945,
+      4659,
+      1353,
+      5216
+    ]
+  },
+  {
+    "document": "lease_application_packet",
+    "page": 2,
+    "type": "visual_pii_candidate",
+    "label": "person",
+    "confidence": 0.471,
+    "bbox": [
+      287,
+      4146,
+      743,
+      4750
+    ]
+  },
+  {
+    "document": "lease_application_packet",
+    "page": 2,
+    "type": "visual_pii_candidate",
+    "label": "laptop",
+    "confidence": 0.339,
+    "bbox": [
+      56,
+      1810,
+      4669,
+      5187
+    ]
+  },
+  {
+    "document": "patient_intake_packet",
+    "page": 0,
+    "type": "visual_pii_candidate",
+    "label": "laptop",
+    "confidence": 0.415,
+    "bbox": [
+      3,
+      576,
+      4574,
+      3648
+    ]
+  },
+  {
+    "document": "patient_intake_packet",
+    "page": 1,
+    "type": "visual_pii_candidate",
+    "label": "book",
+    "confidence": 0.582,
+    "bbox": [
+      0,
+      432,
+      4592,
+      3384
+    ]
+  },
+  {
+    "document": "patient_intake_packet",
+    "page": 2,
+    "type": "visual_pii_candidate",
+    "label": "person",
+    "confidence": 0.433,
+    "bbox": [
+      291,
+      3768,
+      739,
+      4346
+    ]
+  }
+]

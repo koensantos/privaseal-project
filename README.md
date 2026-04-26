@@ -68,7 +68,15 @@ python -m spacy download en_core_web_lg
 
 ---
 
-## Running the pipeline
+## Running the dashboard
+
+```bash
+streamlit run app.py
+```
+
+Opens at `http://localhost:8501`. Upload a PDF or image (PNG/JPG), watch the progress bar, scroll the preview, then confirm the download to save the redacted PDF.
+
+## Running the pipeline (CLI)
 
 ```bash
 python pipeline.py "Generated Files/employee_onboarding_packet.pdf"

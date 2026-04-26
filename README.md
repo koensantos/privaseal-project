@@ -4,7 +4,7 @@ A privacy-first, fully local PII redaction pipeline for scanned documents and im
 
 ## Pipeline
 
-1. **OCR** (PaddleOCR) — extract text + bounding boxes from PDF/image
+1. **OCR** (EasyOCR) — extract text + bounding boxes from PDF/image
 2. **Text PII Detection** (Microsoft Presidio) — classify names, SSNs, phone numbers, addresses, etc.
 3. **Visual PII Detection** (YOLOv8) — detect faces and handwritten signatures
 4. **Streamlit Dashboard** — review, toggle, and download redacted PDF
@@ -48,46 +48,17 @@ Your terminal prompt should now show `(venv)`.
 
 ---
 
-### 2. Install PaddlePaddle
-
-This must be installed before `requirements.txt` because the package index differs by platform.
-
-**Mac (CPU only):**
-```bash
-pip install paddlepaddle==3.3.1
-```
-
-**Windows — check your CUDA version first:**
-```powershell
-nvidia-smi
-```
-
-Then install the matching build:
-
-```powershell
-# CUDA 11.x:
-pip install paddlepaddle-gpu==3.3.1 -i https://www.paddlepaddle.org.cn/packages/stable/cu118/
-
-# CUDA 12.x:
-pip install paddlepaddle-gpu==3.3.1 -i https://www.paddlepaddle.org.cn/packages/stable/cu118/
-```
-
-> If you don't have an NVIDIA GPU, use the CPU build:
-> ```powershell
-> pip install paddlepaddle==3.3.1
-> ```
-
----
-
-### 3. Install all other dependencies
+### 2. Install dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
+EasyOCR will download its model weights to `~/.EasyOCR/` on first run.
+
 ---
 
-### 4. Download the spaCy language model
+### 3. Download the spaCy language model
 
 Presidio requires this for named entity recognition:
 

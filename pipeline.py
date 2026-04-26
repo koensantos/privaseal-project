@@ -125,7 +125,7 @@ def run_pipeline(input_path: str) -> list[dict]:
     return all_targets
 
 
-def run_pipeline_and_redact(input_path: str, output_path: str = None, dpi: int = 200) -> tuple[list[dict], str]:
+def run_pipeline_and_redact(input_path: str, output_path: str = None, dpi: int = 200, progress_callback=None) -> tuple[list[dict], str]:
     """
     End-to-end pipeline that converts each PDF page to an image ONCE and reuses
     those same images for OCR, visual detection, and redaction — guaranteeing
@@ -141,6 +141,10 @@ def run_pipeline_and_redact(input_path: str, output_path: str = None, dpi: int =
     from PIL import ImageDraw
     from ocr_engine import run_ocr_on_image, _POPPLER_PATH
     from visual_pii import _get_model
+
+    def _progress(frac, msg):
+        if progress_callback:
+            progress_callback(frac, msg)
 
     input_path = os.path.abspath(input_path)
 
@@ -161,6 +165,7 @@ def run_pipeline_and_redact(input_path: str, output_path: str = None, dpi: int =
 
     # Convert all pages once — every stage shares these images
     pages = convert_from_path(pdf_path, dpi=dpi, poppler_path=_POPPLER_PATH)
+    _progress(0.05, "Converted PDF pages")
 
     # Stage 1 — OCR
     print("[Pipeline] Stage 1: OCR")
@@ -169,6 +174,7 @@ def run_pipeline_and_redact(input_path: str, output_path: str = None, dpi: int =
         page_ocr = run_ocr_on_image(page_img, page_number=page_num)
         ocr_results.extend(page_ocr)
         print(f"  Page {page_num}/{len(pages)}: {len(page_ocr)} text regions found")
+        _progress(0.05 + 0.45 * (page_num / len(pages)), f"OCR page {page_num}/{len(pages)}")
     print(f"  {len(ocr_results)} text regions total")
 
     # Stage 2 — Text PII
@@ -183,6 +189,7 @@ def run_pipeline_and_redact(input_path: str, output_path: str = None, dpi: int =
     regex_targets = stage_regex_pii(ocr_results)
     print(f"  {len(regex_targets)} regex-pattern regions flagged")
     text_targets = text_targets + kv_targets + merged_targets + regex_targets
+    _progress(0.60, "Text PII detection complete")
 
     # Stage 3 — Visual PII on the same page images
     print("[Pipeline] Stage 3: Visual PII detection")
@@ -204,6 +211,7 @@ def run_pipeline_and_redact(input_path: str, output_path: str = None, dpi: int =
                     "source": "visual",
                     "confidence": conf,
                 })
+        _progress(0.60 + 0.25 * (page_num / len(pages)), f"Visual PII page {page_num}/{len(pages)}")
     print(f"  {len(visual_targets)} visual PII regions flagged")
 
     # Stage 4 — ID card whole-region redaction
@@ -212,6 +220,7 @@ def run_pipeline_and_redact(input_path: str, output_path: str = None, dpi: int =
     id_card_targets = find_id_card_regions(ocr_results, visual_targets, page_sizes)
     print(f"[Pipeline] Stage 4: ID-card region detection")
     print(f"  {len(id_card_targets)} ID-card regions flagged")
+    _progress(0.90, "ID-card detection complete")
 
     all_targets = text_targets + visual_targets + id_card_targets
     print(f"[Pipeline] Done — {len(all_targets)} total redaction targets")
@@ -236,6 +245,7 @@ def run_pipeline_and_redact(input_path: str, output_path: str = None, dpi: int =
         format="PDF",
         resolution=float(dpi),
     )
+    _progress(1.0, "Saved redacted PDF")
     print(f"[Pipeline] Redacted PDF saved: {output_path}\n")
 
     if _tmp_path and os.path.exists(_tmp_path):

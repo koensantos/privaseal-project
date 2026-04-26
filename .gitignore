@@ -9,9 +9,8 @@ __pycache__/
 dist/
 build/
 
-# PaddleOCR model cache (downloaded automatically on first run)
-~/.paddleocr/
-inference/
+# EasyOCR model cache (downloaded automatically on first run)
+~/.EasyOCR/
 
 # OS
 .DS_Store

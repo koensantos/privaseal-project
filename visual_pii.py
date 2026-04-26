@@ -24,7 +24,7 @@ def _get_model():
     return _model
 
 
-def run_visual_pii(pdf_path, dpi=72):
+def run_visual_pii(pdf_path, dpi=300):
     """
     Detect visual PII (faces, persons, etc.) in a PDF using YOLOv8.
 
@@ -50,7 +50,9 @@ def run_visual_pii(pdf_path, dpi=72):
                 # Only flag person detections with sufficient confidence —
                 # yolov8n is a general COCO model and will misclassify document
                 # layouts as laptops, books, etc. at low confidence
-                if label != "person" or conf < 0.45:
+                print(f"  [YOLO] label={label} conf={round(conf,3)} bbox={list(map(int, box.xyxy[0]))}")  # ADD THIS
+
+                if label != "person" or conf < 0.30:
                     continue
 
                 x1, y1, x2, y2 = map(int, box.xyxy[0])

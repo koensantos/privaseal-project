@@ -14,6 +14,7 @@ Redaction target schema (shared contract between all stages):
   }
 """
 
+from cProfile import label
 import os
 from ocr_engine import run_ocr_on_image, run_ocr_on_pdf
 
@@ -124,7 +125,7 @@ def run_pipeline(input_path: str) -> list[dict]:
     return all_targets
 
 
-def run_pipeline_and_redact(input_path: str, output_path: str = None, dpi: int = 72) -> tuple[list[dict], str]:
+def run_pipeline_and_redact(input_path: str, output_path: str = None, dpi: int = 200) -> tuple[list[dict], str]:
     """
     End-to-end pipeline that converts each PDF page to an image ONCE and reuses
     those same images for OCR, visual detection, and redaction — guaranteeing
@@ -193,7 +194,7 @@ def run_pipeline_and_redact(input_path: str, output_path: str = None, dpi: int =
             for box in r.boxes:
                 label = model.names[int(box.cls[0])]
                 conf = round(float(box.conf[0]), 3)
-                if label != "person" or conf < 0.45:
+                if label != "person" or conf < 0.30:
                     continue
                 x1, y1, x2, y2 = map(int, box.xyxy[0])
                 visual_targets.append({

@@ -14,7 +14,7 @@ else:
     _POPPLER_PATH = "/opt/homebrew/bin"
 
 
-def redact_pdf(input_path: str, targets: list[dict], output_path: str = None, dpi: int = 72) -> str:
+def redact_pdf(input_path: str, targets: list[dict], output_path: str = None, dpi: int = 200) -> str:
     """
     Draw black boxes over all redaction targets and save as a new PDF.
 
